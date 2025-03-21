@@ -14,10 +14,10 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
+        port: ${{secrets.SERVER_PORT }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          mkdir -p ~/repos
           cd ~/repos
 
           if [ -d "m-server" ]; then
@@ -26,7 +26,7 @@ jobs:
             git pull
           else
             echo "Project doesn't exist. Cloning..."
-            git clone https://github.com/<your_username>/<your_repo>.git m-server
+            git clone https://github.com/Azreil-OFD/mc-server.git m-server
             cd m-server
           fi
 
