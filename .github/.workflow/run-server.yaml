@@ -1,0 +1,40 @@
+name: Deploy Minecraft Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Execute commands on remote server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          mkdir -p ~/repos
+          cd ~/repos
+
+          if [ -d "m-server" ]; then
+            echo "Project exists. Pulling latest changes..."
+            cd m-server
+            git pull
+          else
+            echo "Project doesn't exist. Cloning..."
+            git clone https://github.com/<your_username>/<your_repo>.git m-server
+            cd m-server
+          fi
+
+          docker stop minecraft_container || true
+          docker rm minecraft_container || true
+          docker build -t minecraft-server .
+
+          docker run -d \
+            -v $(pwd)/world:/server/world \
+            --name minecraft_container \
+            minecraft-server
