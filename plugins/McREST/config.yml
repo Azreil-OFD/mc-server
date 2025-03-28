@@ -1,0 +1,12 @@
+port: 8281
+prefix: mcrest
+auth:
+  enable: false
+  user: mcrest
+  password: mcrest
+  protected:
+  - /
+  - /player
+  - /world
+  - /whitelist
+  - /chat

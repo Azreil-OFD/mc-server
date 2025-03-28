@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "uuid": "18e8e311-a83a-31b7-96e3-b95adfbdd192",
+    "name": "nidarin",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]

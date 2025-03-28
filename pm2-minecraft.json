@@ -4,15 +4,7 @@
         "name": "minecraft-server",
         "cwd": "/server",
         "script": "java",
-        "args": ["-Xmx4096M", "-Xms1024M", "-jar", "forge-1.12.2-14.23.5.2860.jar", "nogui"],
-        "autorestart": true,
-        "max_restarts": 10,
-        "watch": false
-      },
-      {
-        "name": "tuna-tcp",
-        "script": "tuna",
-        "args": ["tcp", "25565"],
+        "args": ["-Xmx8096M", "-Xms1024M", "-jar", "Magma-1.12.2-b4c01d2-server.jar", "nogui"],
         "autorestart": true,
         "max_restarts": 10,
         "watch": false
