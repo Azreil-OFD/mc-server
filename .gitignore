@@ -1,5 +1,6 @@
 saves
 logs
 world
-world1
+world1/
+world2/
 world/.gitkeep
