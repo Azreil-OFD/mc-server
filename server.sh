@@ -3,17 +3,6 @@
 SCRIPTS_DIR="./scripts"
 COMMAND="$1"
 
-# Проверяем, передана ли команда
-if [[ -z "$COMMAND" ]]; then
-  echo "❌ Не указана команда."
-  echo
-  show_help
-  exit 1
-fi
-
-SCRIPT_PATH="$SCRIPTS_DIR/$COMMAND.sh"
-HELP_PATH="$SCRIPTS_DIR/$COMMAND.txt"
-
 function show_help {
   echo "🛠 Доступные команды:"
   for script in "$SCRIPTS_DIR"/*.sh; do
@@ -27,6 +16,19 @@ function show_help {
     printf "  %-10s — %s\n" "$cmd_name" "$description"
   done
 }
+
+# Проверяем, передана ли команда
+if [[ -z "$COMMAND" ]]; then
+  echo "❌ Не указана команда."
+  echo
+  show_help
+  exit 1
+fi
+
+SCRIPT_PATH="$SCRIPTS_DIR/$COMMAND.sh"
+HELP_PATH="$SCRIPTS_DIR/$COMMAND.txt"
+
+
 
 # Выполняем команду, если скрипт существует
 if [[ -f "$SCRIPT_PATH" ]]; then
