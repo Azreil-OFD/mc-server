@@ -1,0 +1,1 @@
+docker buildx build --tag m-server:latest --load .

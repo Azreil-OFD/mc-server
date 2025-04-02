@@ -1,0 +1,1 @@
+Запуск контерена `m-server:latest` с названием `minecraft_container`
