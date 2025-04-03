@@ -188,7 +188,7 @@ settings:
         allowMovement: false
         # After how many seconds should players who fail to login or register
         # be kicked? Set to 0 to disable.
-        timeout: 30
+        timeout: 0
         # Regex pattern of allowed characters in the player name.
         allowedNicknameCharacters: '[a-zA-Z0-9_]*'
         # How far can unregistered players walk?
@@ -273,7 +273,7 @@ settings:
         enabled: true
         # Send every X seconds a message to a player to
         # remind him that he has to login/register
-        messageInterval: 5
+        messageInterval: 100
         # Only registered and logged in players can play.
         # See restrictions for exceptions
         force: true
@@ -413,7 +413,7 @@ Protection:
     countriesBlacklist: 
     - A1
     # Do we need to enable automatic antibot system?
-    enableAntiBot: true
+    enableAntiBot: false
     # The interval in seconds
     antiBotInterval: 5
     # Max number of players allowed to login in the interval
