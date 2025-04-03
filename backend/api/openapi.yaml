@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: ModSender API
+  version: 1.0.0
+  description: API для скачивания zip-архива с модами
+servers:
+  - url: http://localhost:8080
+    description: Локальный сервер
+paths:
+  /download:
+    get:
+      summary: Скачать zip-архив с модами
+      description: Отдаёт zip-архив, содержащий файлы модов
+      responses:
+        "200":
+          description: Архив успешно скачан
+          headers:
+            Content-Length:
+              description: Размер архива в байтах
+              schema:
+                type: integer
+                format: int64
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Архив не найден
+        "500":
+          description: Внутренняя ошибка сервера
+
+  /health:
+    get:
+      summary: Проверка работоспособности сервиса
+      description: Возвращает 200 OK, если сервис работает
+      responses:
+        "200":
+          description: Сервис работает
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+  /list:
+    get:
+      summary: Получить список модов из папки mods
+      description: Возвращает список модов с указанием, активен ли каждый из них
+      responses:
+        "200":
+          description: Список модов успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ModInfo"
+        "500":
+          description: Внутренняя ошибка сервера
+  /upload:
+    post:
+      summary: Загрузить моды
+      description: >
+        Загружает один или несколько .jar файлов модов в папку `mods`.  
+        Поддерживаются частичные загрузки. Возвращаются причины отклонения файлов.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Один или несколько `.jar` файлов
+      responses:
+        "201":
+          description: Все файлы успешно загружены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadSuccessResponse"
+        "207":
+          description: Частично успешно. Некоторые файлы были отклонены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadConflictResponse"
+        "409":
+          description: Ни один файл не был загружен — все отклонены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadConflictResponse"
+        "400":
+          description: Ошибка запроса или формат не multipart/form-data
+        "500":
+          description: Внутренняя ошибка сервера
+  
+components:
+  schemas:
+    UploadSuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Все файлы успешно загружены
+        uploaded:
+          type: array
+          description: Файлы, успешно загруженные на сервер
+          items:
+            type: string
+          example: ["mod1.jar", "mod2.jar"]
+
+    UploadConflictResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Некоторые файлы не были загружены
+        uploaded:
+          type: array
+          description: Файлы, успешно загруженные на сервер
+          items:
+            type: string
+          example: ["mod1.jar", "mod3.jar"]
+        conflicts:
+          type: array
+          description: Файлы, которые уже существуют в папке mods
+          items:
+            type: string
+          example: ["mod2.jar"]
+        invalid:
+          type: array
+          description: Файлы с недопустимым расширением или содержимым
+          items:
+            type: string
+          example: ["readme.txt", "virus.exe"]
+
+    ModInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Название файла мода
+          example: mod1.jar
+        active:
+          type: boolean
+          description: Признак, активен ли мод
+          example: true
