@@ -86,10 +86,10 @@ magma:
   auto-update: true
   messages:
     fml:
-      server-still-starting: '&cServer is still starting! Please wait before reconnecting.'
+      server-still-starting: '&cПадажди...Я еще не готова!'
       fml-required: '&cThis Server is running Magma. Forge and additional mods are
         required in order to connect to this server.'
-      missing-mods: '&cYou are missing the following mods:'
+      missing-mods: '&cУ тебя чет не так с этими модами...:'
 bukkit:
   max-potion-effect-amount: 1024
   enable-reload: true
